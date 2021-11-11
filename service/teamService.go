@@ -1,8 +1,8 @@
 package service
 
 import (
-	"g/go/allsports/domain"
-	"g/go/allsports/errs"
+	"k/golang/gamematic/domain"
+	"k/golang/gamematic/errs"
 )
 
 type TeamService interface {

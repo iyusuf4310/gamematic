@@ -1,8 +1,8 @@
 package main
 
 import (
-	"g/go/allsports/app"
-	"g/go/allsports/logger"
+	"k/golang/gamematic/app"
+	"k/golang/gamematic/logger"
 )
 
 func main() {

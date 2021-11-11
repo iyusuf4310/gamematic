@@ -2,8 +2,8 @@ package domain
 
 import (
 	"database/sql"
-	"g/go/allsports/errs"
-	"g/go/allsports/logger"
+	"k/golang/gamematic/errs"
+	"k/golang/gamematic/logger"
 	"time"
 
 	"github.com/jmoiron/sqlx"

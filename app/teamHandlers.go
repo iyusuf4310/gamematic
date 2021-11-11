@@ -1,7 +1,7 @@
 package app
 
 import (
-	"g/go/allsports/service"
+	"k/golang/gamematic/service"
 
 	"net/http"
 )

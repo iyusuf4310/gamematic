@@ -1,6 +1,6 @@
 package domain
 
-import "g/go/allsports/errs"
+import "k/golang/gamematic/errs"
 
 type Team struct {
 	Id   string `json:"team_id" db:"team_id"`

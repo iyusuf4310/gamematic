@@ -1,9 +1,9 @@
 package service
 
 import (
-	"g/go/allsports/domain"
-	"g/go/allsports/dto"
-	"g/go/allsports/errs"
+	"k/golang/gamematic/domain"
+	"k/golang/gamematic/dto"
+	"k/golang/gamematic/errs"
 )
 
 type PlayerService interface {

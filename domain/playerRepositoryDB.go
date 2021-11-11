@@ -1,8 +1,8 @@
 package domain
 
 import (
-	"g/go/allsports/errs"
-	"g/go/allsports/logger"
+	"k/golang/gamematic/errs"
+	"k/golang/gamematic/logger"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"

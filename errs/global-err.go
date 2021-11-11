@@ -1,7 +1,7 @@
 package errs
 
 import (
-	"g/go/allsports/logger"
+	"k/golang/gamematic/logger"
 	"net/http"
 )
 

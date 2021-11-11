@@ -2,8 +2,8 @@ package app
 
 import (
 	"encoding/json"
-	"g/go/allsports/domain"
-	"g/go/allsports/service"
+	"k/golang/gamematic/domain"
+	"k/golang/gamematic/service"
 	"log"
 	"net/http"
 
