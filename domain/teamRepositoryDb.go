@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"k/golang/gamematic/errs"
 	"k/golang/gamematic/logger"
-	"time"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -51,14 +50,6 @@ func (tm TeamRepositoryDb) FindAll() ([]Team, *errs.AppError) {
 	return teams, nil
 }
 
-func NewTeamRepositoryDb() TeamRepositoryDb {
-	client, err := sqlx.Open("mysql", "root:dayaxQ!@tcp(localhost:3306)/soccer")
-	if err != nil {
-		panic(err)
-	}
-	// See "Important settings" section.
-	client.SetConnMaxLifetime(time.Minute * 3)
-	client.SetMaxOpenConns(10)
-	client.SetMaxIdleConns(10)
-	return TeamRepositoryDb{client}
+func NewTeamRepositoryDb(dbClient *sqlx.DB) TeamRepositoryDb {
+	return TeamRepositoryDb{dbClient}
 }

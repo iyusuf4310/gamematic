@@ -16,7 +16,7 @@ CREATE TABLE players (
   address_2 VARCHAR(20),
   city VARCHAR(20) NOT NULL,
   state VARCHAR(20) NOT NULL,
-  zip_code INT NOT NULL
+  zip_code VARCHAR(20) NOT NULL
 );
 INSERT INTO players VALUES
   ("1001","Harry","Kane","11-11-11","Male","508-320-7922","harryK@google.com","10","Tottenham","44 Hickery Lyne","2","Burlington","MA","1803"),

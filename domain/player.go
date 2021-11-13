@@ -18,4 +18,5 @@ type Player struct {
 type PlayerRepository interface {
 	FindAll() ([]Player, *errs.AppError)
 	ById(string) (*Player, *errs.AppError)
+	Save(p Player) (*Player, *errs.AppError)
 }

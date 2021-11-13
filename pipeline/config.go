@@ -1,53 +1,85 @@
-package pipeline
+package main
 
 import (
+	"database/sql"
+	"flag"
 	"fmt"
+	"net/http"
 	"os"
 
-	"gopkg.in/yaml.v2"
+	"github.com/ilyakaznacheev/cleanenv"
 )
 
 type Config struct {
-	Server struct {
-		Port string `yaml:"port", envconfig:"SERVER_PORT"`
-		Host string `yaml:"host", envconfig:"SERVER_HOST"`
-	} `yaml:"server"`
 	Database struct {
-		Username string `yaml:"user", envconfig:"DB_USERNAME"`
-		Password string `yaml:"pass", envconfig:"DB_PASSWORD"`
+		Host        string `yaml:"host" env:"DB_HOST" env-description:"Database host"`
+		Port        string `yaml:"port" env:"DB_PORT" env-description:"Database port"`
+		Username    string `env:"DB_USER" env-description:"Database user name"`
+		Password    string `env:"DB_PASSWORD" env-description:"Database user password"`
+		Name        string `env:"DB_NAME" env-description:"Database name"`
+		Connections int    `yaml:"connections" env:"DB_CONNECTIONS" env-description:"Total number of database connections"`
 	} `yaml:"database"`
+	Server struct {
+		Host string `yaml:"host" env:"SRV_HOST,HOST" env-description:"Server host" env-default:"localhost"`
+		Port string `yaml:"port" env:"SRV_PORT,PORT" env-description:"Server port" env-default:"8080"`
+	} `yaml:"server"`
+	Greeting string `env:"GREETING" env-description:"Greeting phrase" env-default:"Hello!"`
+}
+
+// Args command-line parameters
+type Args struct {
+	ConfigPath string
+}
+
+// ConnectDB connects to an abstract database
+func ConnectDB(host, port, user, password, name string, conn int) (*sql.DB, error) {
+	db, err := sql.Open(name,
+		fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+			host, port, user, password, name))
+	if err != nil {
+		return nil, err
+	}
+	db.SetMaxOpenConns(conn)
+	return db, nil
 }
 
 func main() {
 	var cfg Config
-	readFile(&cfg)
-	readEnv(&cfg)
-	fmt.Printf("%+v", cfg)
-}
 
-func processError(err error) {
-	fmt.Println(err)
-	os.Exit(2)
-}
+	args := ProcessArgs(&cfg)
 
-func readFile(cfg *Config) {
-	f, err := os.Open("config.yml")
-	if err != nil {
-		processError(err)
+	// read configuration from the file and environment variables
+	if err := cleanenv.ReadConfig(args.ConfigPath, &cfg); err != nil {
+		fmt.Println(err)
+		os.Exit(2)
 	}
-	defer f.Close()
 
-	decoder := yaml.NewDecoder(f)
-	err = decoder.Decode(cfg)
-	if err != nil {
-		processError(err)
-	}
+	// connect to the DB (example)
+	ConnectDB(cfg.Database.Host, cfg.Database.Port, cfg.Database.Username,
+		cfg.Database.Password, cfg.Database.Name, cfg.Database.Connections)
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "%s", cfg.Greeting)
+	})
+
+	http.ListenAndServe(cfg.Server.Host+":"+cfg.Server.Port, nil)
 }
 
-func readEnv(cfg *Config) {
-	// err := envconfig.Process("", cfg)
-	// if err != nil {
-	// 	processError(err)
-	// }
-	//https://dev.to/ilyakaznacheev/a-clean-way-to-pass-configs-in-a-go-application-1g64
+// ProcessArgs processes and handles CLI arguments
+func ProcessArgs(cfg interface{}) Args {
+	var a Args
+
+	f := flag.NewFlagSet("localhot", 1)
+	f.StringVar(&a.ConfigPath, "c", "config.yml", "pipeline/config.yml")
+
+	fu := f.Usage
+	f.Usage = func() {
+		fu()
+		envHelp, _ := cleanenv.GetDescription(cfg, nil)
+		fmt.Fprintln(f.Output())
+		fmt.Fprintln(f.Output(), envHelp)
+	}
+
+	f.Parse(os.Args[1:])
+	return a
 }
