@@ -62,3 +62,27 @@ INSERT INTO coaches VALUES
     ("1002","Xavi","hernandez","M","227-342-7922","XaviH@yahoo.com","408 Winn Street","","Woburn","MA","01803","Assistant Coach","FC Barcelona"),
     ("1003","Mauricio","Pochettino","M","227-342-7922","MauricioP@gmail.com","408 Winn Street","","Woburn","MA","01803","Head Coach","PSG"),
     ("1004","Antonio Antonio","Conte","M","227-342-7922","AntonioA@gmail.com","408 Winn Street","","Woburn","MA","01803","Head Coach","Tottenham");
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `username` varchar(20) NOT NULL,
+  `password` varchar(20) NOT NULL,
+  `role` varchar(20) NOT NULL,
+  `player_id` int(11) DEFAULT NULL,
+  `team_id` int(11) DEFAULT NULL,
+  `created_on` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT INTO `users` VALUES
+  ('admin','abc123','admin',NULL,NULL,'2021-08-09 09:27:22'),
+  ('2001','abc123','user', 1001, 1001,'2021-05-09 10:27:22'),
+  ('2002','abc123','user', 1002, 1002,'2021-03-09 01:27:22'),
+  ('2003','abc123','user', 1003, 1003,'2021-09-09 08:27:22'),
+  ('2004','abc123','user', 1004, 1004,'2020-01-09 03:27:22');
+
+DROP TABLE IF EXISTS `refresh_token_store`;
+CREATE TABLE `refresh_token_store` (
+    `refresh_token` varchar(300) NOT NULL,
+    created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`refresh_token`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

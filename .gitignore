@@ -1,4 +1,6 @@
-.idea
-!.travis.yml
-!.github
-!.gitignore
+gamematic
+.idea/
+.vscode
+*.iml
+banking
+mocks/
