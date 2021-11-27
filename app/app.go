@@ -39,6 +39,7 @@ func Start() {
 	// Team routes
 	router.HandleFunc("/teams", th.getAllTeams).Methods(http.MethodGet)
 	router.HandleFunc("/teams/{name}", th.getTeam).Methods(http.MethodGet)
+	router.HandleFunc("/teams/newteam", th.newTeam).Methods(http.MethodPost)
 
 	// Player routes
 	router.HandleFunc("/players", ph.getAllPlayers).Methods(http.MethodGet)

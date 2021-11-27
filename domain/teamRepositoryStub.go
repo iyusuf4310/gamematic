@@ -15,8 +15,7 @@ func NewTeamRepositoryStub() TeamRepositoryStub {
 		{Id: "1001", Name: "Burlington Tigers",
 			Address: Address{Address1: "44 Hickery Lyne", Address2: "", City: "Burlington", State: "MA", Zipcode: "01803"},
 			Coach: Coach{Id: "10", FirstName: "Ismail", LastName: "Yusuf", Gender: "Male", PhoneNumber: "(508) 234 - 2343",
-				Address: Address{Address1: "44 Hickery Lyne", Address2: "", City: "Burlington", State: "MA", Zipcode: "01803"}},
-			Player: Player{}},
+				Address: Address{Address1: "44 Hickery Lyne", Address2: "", City: "Burlington", State: "MA", Zipcode: "01803"}}},
 	}
 	return TeamRepositoryStub{teams}
 }

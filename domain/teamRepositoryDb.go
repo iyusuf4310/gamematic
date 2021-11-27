@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"k/golang/gamematic/errs"
 	"k/golang/gamematic/logger"
+	"strconv"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -15,7 +16,7 @@ type TeamRepositoryDb struct {
 func (team TeamRepositoryDb) ByName(name string) (*Team, *errs.AppError) {
 	var t Team
 
-	findTeamSql := "select * from teams t join coaches c join players p where t.name = ? and t.name = p.team and c.team = t.name"
+	findTeamSql := "select t.team_id, t.name, t.address_1, t.address_2, t.city, t.state, t.zip_code, c.* from teams t join coaches c join players p where t.name = ? and t.name = p.team and c.team = t.name"
 
 	err := team.client.Get(&t, findTeamSql, name)
 
@@ -34,7 +35,7 @@ func (team TeamRepositoryDb) ByName(name string) (*Team, *errs.AppError) {
 func (tm TeamRepositoryDb) FindAll() ([]Team, *errs.AppError) {
 	teams := make([]Team, 0)
 
-	findAllSql := "select * from teams t join coaches c join players p where t.name = p.team and c.team = t.name"
+	findAllSql := "select t.team_id, t.name, t.address_1, t.address_2, t.city, t.state, t.zip_code, c.* from teams t join coaches c where c.team = t.name"
 
 	err := tm.client.Select(&teams, findAllSql)
 
@@ -48,6 +49,26 @@ func (tm TeamRepositoryDb) FindAll() ([]Team, *errs.AppError) {
 	}
 
 	return teams, nil
+}
+
+func (t TeamRepositoryDb) Save(a Team) (*Team, *errs.AppError) {
+	sqlInsert := "INSERT INTO teams (name, address_1, address_2, city, state, zip_code) VALUES (?,?,?,?,?,?)"
+	result, err := t.client.Exec(sqlInsert, a.Name, a.Address1, a.Address2, a.City, a.State, a.Zipcode)
+
+	if err != nil {
+		logger.Error("Error while creating new team: " + err.Error())
+		return nil, errs.NewUnexpectedError("Unexpected error")
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		logger.Error("Error while getting last insert Id: " + err.Error())
+		return nil, errs.NewUnexpectedError("Unexpected error")
+	}
+
+	a.Id = strconv.FormatInt(id, 10)
+
+	return &a, nil
 }
 
 func NewTeamRepositoryDb(dbClient *sqlx.DB) TeamRepositoryDb {

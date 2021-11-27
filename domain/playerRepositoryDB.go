@@ -28,8 +28,8 @@ func (pl PlayerRepositoryDb) ById(id string) (*Player, *errs.AppError) {
 }
 
 func (p PlayerRepositoryDb) Save(a Player) (*Player, *errs.AppError) {
-	sqlInsert := "INSERT INTO players (player_id, first_name, last_name, birth_date, gender, phone_number, email_address, jerse_number, team, address_1, address_2, city, state, zip_code) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
-	result, err := p.client.Exec(sqlInsert, a.Id, a.FirstName, a.FirstName, a.DateofBirth, a.Gender, a.PhoneNumber, a.EmailAddress, a.JerseNumber, a.Team, a.Address1, a.Address2, a.City, a.State, a.Zipcode)
+	sqlInsert := "INSERT INTO players (first_name, last_name, birth_date, gender, phone_number, email_address, jerse_number, team, address_1, address_2, city, state, zip_code) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)"
+	result, err := p.client.Exec(sqlInsert, a.FirstName, a.LastName, a.DateofBirth, a.Gender, a.PhoneNumber, a.EmailAddress, a.JerseNumber, a.Team, a.Address1, a.Address2, a.City, a.State, a.Zipcode)
 
 	if err != nil {
 		logger.Error("Error while creating new user: " + err.Error())

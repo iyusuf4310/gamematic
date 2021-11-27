@@ -10,7 +10,7 @@ CREATE TABLE players (
   gender VARCHAR(20) NOT NULL,
   phone_number VARCHAR(20) NOT NULL,
   email_address VARCHAR(50)NOT NULL,
-  jerse_number INT,
+  jerse_number int(11),
   team VARCHAR(20),
   address_1 VARCHAR(50) NOT NULL,
   address_2 VARCHAR(20),
@@ -61,7 +61,7 @@ INSERT INTO coaches VALUES
     ("1001","Ole","Gunnar","M","781-112-7922","OleG@yahoo.com","408 Winn Street","","Woburn","MA","01803","Head Coach","Man United"),
     ("1002","Xavi","hernandez","M","227-342-7922","XaviH@yahoo.com","408 Winn Street","","Woburn","MA","01803","Assistant Coach","FC Barcelona"),
     ("1003","Mauricio","Pochettino","M","227-342-7922","MauricioP@gmail.com","408 Winn Street","","Woburn","MA","01803","Head Coach","PSG"),
-    ("1004","Antonio Antonio","Conte","M","227-342-7922","AntonioA@gmail.com","408 Winn Street","","Woburn","MA","01803","Head Coach","Tottenham");
+    ("1004","Antonio","Conte","M","227-342-7922","AntonioA@gmail.com","408 Winn Street","","Woburn","MA","01803","Head Coach","Tottenham");
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
