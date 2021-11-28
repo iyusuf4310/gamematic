@@ -20,18 +20,6 @@ type Address struct {
 	Zipcode  string `json:"Zipcode" db:"zip_code"`
 }
 
-type Coach struct {
-	Id           string `json:"id" db:"id"`
-	FirstName    string `json:"first_name" db:"first_name"`
-	LastName     string `json:"last_name" db:"last_name"`
-	Gender       string `json:"gender" db:"gender"`
-	PhoneNumber  string `json:"phone_number" db:"phone_number"`
-	EmailAddress string `json:"email_address" db:"email_address"`
-	Address      Address
-	Team         string `json:"team_name" db:"team"`
-	Role         string `json:"role" db:"role"`
-}
-
 type Assistant struct {
 	Id          string  `json:"id"`
 	FirstName   string  `json:"first_name"`
@@ -65,6 +53,7 @@ func (c Team) ToDTO() dto.TeamResponse {
 			PhoneNumber:  c.PhoneNumber,
 			EmailAddress: c.EmailAddress,
 			Role:         c.Role,
+			Team:         c.Team,
 		},
 	}
 }

@@ -6,12 +6,3 @@ type TeamResponse struct {
 	AddressResponse
 	CoachResponse
 }
-
-type CoachResponse struct {
-	FirstName    string `json:"-"`
-	LastName     string `json:"-"`
-	Gender       string `json:"-"`
-	PhoneNumber  string `json:"-"`
-	EmailAddress string `json:"-"`
-	Role         string `json:"-"`
-}

@@ -4,13 +4,25 @@ import (
 	"encoding/json"
 	"k/golang/gamematic/dto"
 	"k/golang/gamematic/service"
-
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 //Player Handlers
 type PlayerHandlers struct {
 	service service.PlayerService
+}
+
+func (ch *PlayerHandlers) getPlayer(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["player_id"]
+	player, err := ch.service.GetPlayer(id)
+	if err != nil {
+		writeResponse(w, err.Code, err.AsMessage())
+	} else {
+		writeResponse(w, http.StatusOK, player)
+	}
 }
 
 //Gets all Players from the repository

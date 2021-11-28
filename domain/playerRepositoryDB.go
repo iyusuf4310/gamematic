@@ -7,6 +7,8 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
+
+	"strings"
 )
 
 type PlayerRepositoryDb struct {
@@ -20,8 +22,13 @@ func (pl PlayerRepositoryDb) ById(id string) (*Player, *errs.AppError) {
 	err := pl.client.Get(&p, findPlayerSql, id)
 
 	if err != nil {
-		logger.Error("Error while querying players table " + err.Error())
-		return nil, errs.NewUnexpectedError("Unexpected error")
+
+		if strings.Contains(err.Error(), "no rows in result set") {
+			return nil, errs.NewNotFoundError("No PLayer found with Id: " + id)
+		} else {
+			logger.Error("Error while querying players table " + err.Error())
+			return nil, errs.NewUnexpectedError("Unexpected error")
+		}
 	}
 
 	return &p, nil
