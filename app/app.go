@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"k/golang/gamematic/domain"
+	"k/golang/gamematic/logger"
 	"k/golang/gamematic/service"
 	"log"
 	"net/http"
@@ -44,6 +45,8 @@ func Start() {
 	router.HandleFunc("/teams", th.getAllTeams).Methods(http.MethodGet)
 	router.HandleFunc("/teams/{name}", th.getTeam).Methods(http.MethodGet)
 	router.HandleFunc("/teams/newteam", th.newTeam).Methods(http.MethodPost)
+	router.HandleFunc("/teams/{team_id:[0-9]+}", th.deleteTeam).Methods(http.MethodDelete)
+	router.HandleFunc("/teams/updateteam", th.newTeam).Methods(http.MethodPut)
 
 	// Player routes
 	router.HandleFunc("/players", ph.getAllPlayers).Methods(http.MethodGet)
@@ -56,7 +59,11 @@ func Start() {
 	router.HandleFunc("/coaches/{coach_id:[0-9]+}", ch.GetCoach).Methods(http.MethodGet)
 
 	//Start server
-	log.Fatal(http.ListenAndServe("localhost:8013", router))
+	address := os.Getenv("SERVER_ADDRESS")
+	port := os.Getenv("SERVER_PORT")
+	logger.Info(fmt.Sprintf("Starting Gamematic server on %s:%s ...", address, port))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%s", address, port), router))
+
 }
 
 func writeResponse(w http.ResponseWriter, code int, data interface{}) {
@@ -73,8 +80,9 @@ func getDBClient() *sqlx.DB {
 	dbAddr := os.Getenv("DB_HOST")
 	dbPort := os.Getenv("DB_PORT")
 	dbName := os.Getenv("DB_NAME")
-	dataSource := fmt.Sprintf(dbUser + ":" + dbPassword + "@tcp(" + dbAddr + ":" + dbPort + ")/" + dbName)
+	dataSource := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", dbUser, dbPassword, dbAddr, dbPort, dbName)
 	client, err := sqlx.Open("mysql", dataSource)
+
 	if err != nil {
 		panic(err)
 	}

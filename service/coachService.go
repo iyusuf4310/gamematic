@@ -6,6 +6,7 @@ import (
 	"k/golang/gamematic/errs"
 )
 
+//go:generate mockgen -destination=../mocks/service/coachService.go -package=service k/golang/gamematic/service CoachService
 type CoachService interface {
 	GetAllCoaches() ([]dto.CoachResponse, *errs.AppError)
 	GetCoach(name string) (*dto.CoachResponse, *errs.AppError)

@@ -9,7 +9,6 @@ type Team struct {
 	Id   string `json:"team_id" db:"team_id"`
 	Name string `json:"name" db:"name"`
 	Address
-	Coach
 }
 
 type Address struct {
@@ -33,6 +32,8 @@ type TeamRepository interface {
 	FindAll() ([]Team, *errs.AppError)
 	ByName(name string) (*Team, *errs.AppError)
 	Save(t Team) (*Team, *errs.AppError)
+	Delete(ID int) *errs.AppError
+	Update(t Team) (*Team, *errs.AppError)
 }
 
 func (c Team) ToDTO() dto.TeamResponse {
@@ -45,15 +46,6 @@ func (c Team) ToDTO() dto.TeamResponse {
 			City:     c.City,
 			State:    c.State,
 			Zipcode:  c.Zipcode,
-		},
-		CoachResponse: dto.CoachResponse{
-			FirstName:    c.FirstName,
-			LastName:     c.LastName,
-			Gender:       c.Gender,
-			PhoneNumber:  c.PhoneNumber,
-			EmailAddress: c.EmailAddress,
-			Role:         c.Role,
-			Team:         c.Team,
 		},
 	}
 }

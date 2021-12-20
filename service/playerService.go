@@ -7,6 +7,7 @@ import (
 	"k/golang/gamematic/errs"
 )
 
+//go:generate mockgen -destination=../mocks/service/playerService.go -package=service k/golang/gamematic/service playerService
 type PlayerService interface {
 	GetAllPlayers() ([]domain.Player, *errs.AppError)
 	GetPlayer(string) (*dto.PlayerResponse, *errs.AppError)

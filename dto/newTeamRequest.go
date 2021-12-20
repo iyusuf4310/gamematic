@@ -11,7 +11,7 @@ type NewTeamRequest struct {
 func (r NewTeamRequest) Validate() *errs.AppError {
 
 	if len(r.Name) == 0 {
-		return errs.NewValidationError("To create a new team you need to provide team name.")
+		return errs.NewValidationError("To create or update a new team you need to provide team name.")
 	}
 	return nil
 }

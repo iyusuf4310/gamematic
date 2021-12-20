@@ -1,6 +1,6 @@
 #!/usr/bin/env bash -l
-  export LOCAL_HOST="localhost"
-  export PORT="8011"
+  export SERVER_ADDRESS="localhost"
+  export SERVER_PORT="8013"
   export DB_PASSWORD="dayaxQ!"
   export DB_PORT="3306"
   export DB_USER="root"

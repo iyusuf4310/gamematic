@@ -5,6 +5,7 @@ go 1.16
 require (
 	github.com/BurntSushi/toml v0.4.1 // indirect
 	github.com/go-sql-driver/mysql v1.6.0
+	github.com/golang/mock v1.6.0 // indirect
 	github.com/gorilla/mux v1.8.0
 	github.com/ilyakaznacheev/cleanenv v1.2.5 // indirect
 	github.com/jmoiron/sqlx v1.3.4
